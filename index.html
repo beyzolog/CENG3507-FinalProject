@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blueberry Factory Management System</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <h6>Blueberry Factory Management System</h6>
+      <ul>
+        <li>
+          <a href="#" onclick="showModule('supplierManagement')"
+            >Supplier Management</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showModule('purchaseManagement')"
+            >Purchase Management</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showModule('productCategorization')">
+            Categorization
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="showModule('salesManagement')"
+            >Sales Management</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="showModule('financialAnalysis')"
+            >Financial Analysis</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <!-- Supplier Management -->
+      <div id="supplierManagement" class="module">
+        <h1>Supplier Management</h1>
+        <h2>Add/Update Farmer</h2>
+        <form id="farmerForm">
+          <label for="farmerId">Farmer ID:</label>
+          <input
+            type="text"
+            id="farmerId"
+            name="farmerId"
+            required
+          /><br /><br />
+          <label for="farmerName">Name:</label>
+          <input
+            type="text"
+            id="farmerName"
+            name="farmerName"
+            required
+          /><br /><br />
+          <label for="farmerContact">Contact (Phone/Email):</label>
+          <input
+            type="text"
+            id="farmerContact"
+            name="farmerContact"
+            required
+          /><br /><br />
+          <label for="farmerLocation">Location:</label>
+          <input
+            type="text"
+            id="farmerLocation"
+            name="farmerLocation"
+            required
+          /><br /><br />
+          <button type="submit">Save Farmer</button>
+        </form>
+
+        <h2>Farmers List</h2>
+        <input
+          type="text"
+          id="searchBox"
+          placeholder="Search by name or location"
+        />
+        <button id="exportButton">Export Farmer Data</button>
+        <table id="farmerListTable" border="1">
+          <thead>
+            <tr>
+              <th>Farmer ID</th>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Location</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="farmerList"></tbody>
+        </table>
+      </div>
+
+      <!-- Purchase Management -->
+      <div id="purchaseManagement" class="module">
+        <h1>Purchase Management</h1>
+
+        <!-- Purchase Form -->
+        <h2>Add New Purchase</h2>
+        <form id="purchaseForm">
+          <label for="purchaseId">Purchase ID:</label>
+          <input
+            type="text"
+            id="purchaseId"
+            name="purchaseId"
+            required
+          /><br /><br />
+
+          <label for="farmerIdSelect">Farmer ID:</label>
+          <select id="farmerIdSelect" name="farmerId" required>
+            <option value="">Select a Farmer</option></select
+          ><br /><br />
+
+          <label for="purchaseDate">Date:</label>
+          <input
+            type="date"
+            id="purchaseDate"
+            name="purchaseDate"
+            required
+          /><br /><br />
+
+          <label for="quantity">Quantity (kg):</label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            step="0.01"
+            required
+          /><br /><br />
+
+          <label for="pricePerKg">Price per kg:</label>
+          <input
+            type="number"
+            id="pricePerKg"
+            name="pricePerKg"
+            step="0.01"
+            required
+          /><br /><br />
+
+          <button type="submit">Add Purchase</button>
+        </form>
+
+        <!-- Purchase List -->
+        <h2>Purchase Records</h2>
+        <label for="sortOptions">Sort by:</label>
+        <select id="sortOptions">
+          <option value="date">Date</option>
+          <option value="amount">Total Cost</option>
+          <option value="farmerId">Farmer ID</option>
+        </select>
+        <button id="sortButton">Sort</button>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Purchase ID</th>
+              <th>Farmer ID</th>
+              <th>Date</th>
+              <th>Quantity (kg)</th>
+              <th>Price per kg</th>
+              <th>Total Cost</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="purchaseList"></tbody>
+        </table>
+
+        <!-- Summary Section -->
+        <h2>Generate Purchase Summary</h2>
+        <label for="summaryFarmerId">Farmer ID (optional):</label>
+        <input type="text" id="summaryFarmerId" /><br /><br />
+
+        <label for="startDate">Start Date :</label>
+        <input type="date" id="startDate" /><br /><br />
+
+        <label for="endDate">End Date :</label>
+        <input type="date" id="endDate" /><br /><br />
+
+        <button id="generateSummaryButton">Generate Summary</button>
+
+        <!-- Expense Section -->
+        <h2>Expense Calculation</h2>
+        <label for="expensePeriod">Select Time Period:</label>
+        <select id="expensePeriod">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+        <button id="generateExpenseReportButton">
+          Generate Expense Report
+        </button>
+      </div>
+
+      <!-- Product Categorization and Packaging -->
+      <div id="productCategorization" class="module">
+        <h1>Product Categorization and Packaging</h1>
+
+        <!-- Product Assignment Form -->
+        <h2>Assign Products to Categories</h2>
+        <div id="uncategorizedQuantityDisplay"></div>
+        <form id="productForm">
+          <label for="productWeight">Category type:</label>
+          <select id="productWeight" name="productWeight" required>
+            <option value="100">100 g - Small</option>
+            <option value="250">250 g - Medium</option>
+            <option value="500">500 g - Large</option>
+            <option value="1000">1 kg - Extra Large</option>
+            <option value="2000">2 kg - Family Pack</option>
+            <option value="5000">5 kg - Bulk Pack</option>
+            <option value="Custom">Custom - Premium</option></select
+          ><br /><br />
+
+          <label for="productQuantity">number of packages:</label>
+          <input
+            type="number"
+            id="productQuantity"
+            name="productQuantity"
+            required
+          /><br /><br />
+
+          <button type="submit">Assign Product</button>
+        </form>
+
+        <!-- Category Table -->
+        <h2>Categories and Stock Levels</h2>
+        <table border="1" id="categoryTable">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Weight (g)</th>
+              <th>Stock Level</th>
+              <th>Minimum Stock Level</th>
+              <th>Price per Kg ($)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <h1>Ürün Stok Raporları</h1>
+
+        <div>
+          <button id="stockUsageReportBtn">Stok Kullanımı</button>
+          <button id="stockTrendReportBtn">Stok Trendi</button>
+          <button id="stockForecastReportBtn">Stok Tahmini</button>
+        </div>
+
+        <div id="reportOutput"></div>
+      </div>
+
+      <div id="salesManagement" class="module">
+        <h1>Sales Management</h1>
+
+        <!-- Order Form -->
+        <h2>Log New Order</h2>
+        <form id="orderForm">
+          <label for="orderId">Order ID:</label>
+          <input type="text" id="orderId" name="orderId" required /><br /><br />
+
+          <label for="customerInfo">Customer Info:</label>
+          <input type="text" id="customerInfo" required />
+
+          <label for="productCategory">Product Category:</label>
+          <select id="productCategory" name="productCategory" required>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+            <option value="Extra Large">Extra Large</option>
+            <option value="Family Pack">Family Pack</option>
+            <option value="Bulk Pack">Bull Pack</option>
+            <option value="Custom - Premium">custom</option></select
+          ><br /><br />
+
+          <label for="quantityOrdered">Quantity Ordered:</label>
+          <input
+            type="number"
+            id="quantityOrdered"
+            name="quantityOrdered"
+            required
+          /><br /><br />
+
+          <label for="orderDate">Order Date:</label>
+          <input
+            type="date"
+            id="orderDate"
+            name="orderDate"
+            required
+          /><br /><br />
+
+          <label for="orderStatus">Order Status:</label>
+          <select id="orderStatus" name="orderStatus" required>
+            <option value="Pending">Pending</option>
+            <option value="Processed">Processed</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option></select
+          ><br /><br />
+
+          <button type="submit">Log Order</button>
+        </form>
+
+        <h2>Order History</h2>
+        <!-- Search Bar -->
+        <input
+          type="text"
+          id="searchOrder"
+          placeholder="Search status,customer,category"
+        />
+
+        <!-- Table to Display Order History -->
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer Info</th>
+              <th>Product Category</th>
+              <th>Quantity</th>
+              <th>Total Price ($)</th>
+              <th>Date</th> 
+              <th>Order Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orderHistoryList">
+            <!-- Order rows will be dynamically inserted here -->
+          </tbody>
+        </table>
+        <h2>Order Revenue</h2>
+        <!-- Table to Display Order Revenue -->
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Product Category</th>
+              <th>Total Revenue($)</th>
+            </tr>
+          </thead>
+          <tbody id="orderRevenueList">
+            <!-- Order rows will be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="financialAnalysis" class="module">
+        <h2>Financial Analysis Report</h2>
+        <div class="form-group">
+          <label for="reportStartDate">Start Date:</label>
+          <input type="date" id="reportStartDate" />
+        </div>
+        <div class="form-group">
+          <label for="reportEndDate">End Date:</label>
+          <input type="date" id="reportEndDate" />
+        </div>
+        <button id="generateReportButton" class="btn">Generate Report</button>
+        <div id="reportOutput" class="report-output">
+          <h3>Report Details</h3>
+          <p>
+            <strong>Total Income from Sales:</strong>
+            <span id="totalIncome">$0.00</span>
+          </p>
+          <p>
+            <strong>Total Expenses for Blueberries:</strong>
+            <span id="totalExpenses">$0.00</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showModule(moduleId) {
+        // Remove active class from all modules
+        const modules = document.querySelectorAll(".module");
+        modules.forEach((module) => module.classList.remove("active"));
+
+        // Add active class to the selected module
+        const selectedModule = document.getElementById(moduleId);
+        if (selectedModule) {
+          selectedModule.classList.add("active");
+        }
+
+        // Store the active module in localStorage
+        localStorage.setItem("activeModule", moduleId);
+      }
+
+      // On page load, check if there's an active module saved in localStorage
+      document.addEventListener("DOMContentLoaded", () => {
+        const activeModule =
+          localStorage.getItem("activeModule") || "supplierManagement"; // Default to 'supplierManagement'
+        showModule(activeModule);
+      });
+    </script>
+
+    <script type="module" src="js/purchase.js"></script>
+    <script type="module" src="js/farmer.js"></script>
+    <script type="module" src="js/product.js"></script>
+    <script type="module" src="js/order.js"></script>
+    <script type="module" src="js/report.js"></script>
+  </body>
+</html>
